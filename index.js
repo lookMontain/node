@@ -1,0 +1,11 @@
+const server = require('./server');
+const route = require('./router');
+const requestHandlers = require('./requestHandlers');
+const handle = {};
+handle['/'] = requestHandlers.start;
+handle['/start'] = requestHandlers.start;
+handle['/upload'] = requestHandlers.upload;
+handle['/outText'] = requestHandlers.outText;
+handle["/show"] = requestHandlers.show;
+handle["/uploadFile"] = requestHandlers.uploadFile;
+server.start(route.route, handle);
