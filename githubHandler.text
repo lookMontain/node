@@ -1,0 +1,116 @@
+首先： 创建GitHub账号：
+
+ https://github.com/  ---> Pricing and Signup ---> Create a free account
+创建SSH公钥：
+
+打开终端
+cd ～/.ssh  //检查是否已经存在ssh
+
+如果存在，先将已有的ssh备份，或者将新建的ssh生成到另外的目录下
+
+ 如果不存在，通过默认的参数直接生成ssh
+
+ ssh-keygen -t rsa -C xxxxx@xxxx.com（注册github时的email）
+ 
+ 在github中添加ssh：
+
+       登陆github，选择Account Settings-->SSH  Keys 添加ssh
+       Title：xxxxx@xxxx.com //不知道这边有什么用，不确定是一个新邮箱还是注册gitHub的邮箱，感觉没什么关系
+       Key：打开你生成的id_rsa.pub文件，将其中所有的内容拷贝至此，需要用文本开打。像下面这样
+
+ 远程建工程并与本地交互：
+
+在github下建自己的Repository。Create a New Repository
+
+touch README.md //新建一个记录提交操作的文档
+git init //初始化本地仓库
+git add README.md //添加
+git add *  //加入所有项目
+git status //检查状态 如果都是绿的 证明成功
+git commit -m "first commit"//提交到要地仓库，并写一些注释
+git remote add origin git@github.com:youname/Test.git //连接远程仓库并建了一个名叫：origin的别名
+git push -u origin master //将本地仓库的东西提交到地址是origin的地址，master分支下
+
+
+常用命令及用法一览：
+
+当电脑第一次使用（意思是输入一次，本电脑终身有用）：
+git init  //git 初始化 （进本地目录以后）  
+git remote add origin url     //url : 新建工程的url  
+
+提交：
+git add .   //本目录下所有修改工程提交至本地仓库  
+git commit -m "up"  //必须步骤，为更新做描述  
+git push origin master  //将本地仓库更新至远程仓库  
+
+添加新文件：
+git add .     //添加本目录下所有新添加的文件  
+git commit -m "up"  //描述添加文件  
+git push origin master   //更新  
+删除文件：
+git add .   //添加本目录下所有新更新的文件  
+git commit -m "de"    //描述文件  
+git rm "文件"    //删除文件  
+git push origin master //更新  
+下载工程：
+git clone url   //url 是远程url  
+远程相对本地的更新：
+git pull origin master  
+ 
+以上命令基本够用了~~
+ 
+过程中的BUG解决方法：
+
+1 ：如果输入$ Git remote add origin git@github.com:djqiang（github帐号名）/gitdemo（项目名）.git 
+
+    提示出错信息：fatal: remote origin already exists.
+
+    解决办法如下：
+
+    1、先输入$ git remote rm origin
+
+    2、再输入$ git remote add origin git@github.com:djqiang/gitdemo.git 就不会报错了！
+
+    3、如果输入$ git remote rm origin 还是报错的话，error: Could not remove config section 'remote.origin'. 我们需要修改gitconfig文件的内容
+
+    4、找到你的github的安装路径，我的是C:\Users\ASUS\AppData\Local\GitHub\PortableGit_ca477551eeb4aea0e4ae9fcd3358bd96720bb5c8\etc
+
+    5、找到一个名为gitconfig的文件，打开它把里面的[remote "origin"]那一行删掉就好了！
+
+  2 ：如果输入$ ssh -T git@github.com
+
+    出现错误提示：Permission denied (publickey).因为新生成的key不能加入ssh就会导致连接不上github。
+
+    解决办法如下：
+
+    1、先输入$ ssh-agent，再输入$ ssh-add ~/.ssh/id_key，这样就可以了。
+
+    2、如果还是不行的话，输入ssh-add ~/.ssh/id_key 命令后出现报错Could not open a connection to your authentication agent.解决方法是key用Git Gui的ssh工具生成，这样生成的时候key就直接保存在ssh中了，不需要再ssh-add命令加入了，其它的user，token等配置都用命令行来做。
+
+    3、最好检查一下在你复制id_rsa.pub文件的内容时有没有产生多余的空格或空行，有些编辑器会帮你添加这些的。
+
+ 3 ： 如果输入$ git push origin master
+
+    提示出错信息：error:failed to push som refs to .......
+
+    解决办法如下：
+
+    1、先输入$ git pull origin master //先把远程服务器github上面的文件拉下来
+
+    2、再输入$ git push origin master
+
+    3、如果出现报错 fatal: Couldn't find remote ref master或者fatal: 'origin' does not appear to be a git repository以及fatal: Could not read from remote repository.
+
+    4、则需要重新输入$ git remote add origingit@github.com:djqiang/gitdemo.git
+
+ 
+
+在新建Xcode工程时，如果发现目录下有.svn和.git ，可选择性的删除：
+
+//删除文件夹下的所有 .svn 文件
+
+find . -name ".svn" | xargs rm -Rf
+
+//删除文件夹下的所有 .git 文件
+ 
+find . -name ".git" | xargs rm -Rf
